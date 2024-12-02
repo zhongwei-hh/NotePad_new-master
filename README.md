@@ -420,7 +420,6 @@ public class NotesList extends ListActivity {
 
 效果展示：
 
-
 ![image](https://github.com/user-attachments/assets/e669e413-74e2-4897-b252-4efbfc72ef33)
 
 ![image](https://github.com/user-attachments/assets/ea2058dd-3a2d-4052-b18a-6baae2c6205b)
@@ -695,7 +694,8 @@ protected void onListItemClick(ListView l, View v, int position, long id) {
 效果展示：
 
 
-![image](https://github.com/user-attachments/assets/5934db1d-593d-4835-a7a2-59a08a69db35)
+
+![image](https://github.com/user-attachments/assets/4492ec83-feed-4719-8161-bde3f4978099)
 
 ![image](https://github.com/user-attachments/assets/f2bcb809-d4da-47b5-b3db-51f9d5d9b783)
 
