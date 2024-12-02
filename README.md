@@ -88,7 +88,6 @@ int[] viewIDs = { android.R.id.text1 ,android.R.id.text2};
 ![image](https://github.com/user-attachments/assets/f98d2ab9-f224-409b-85cf-8480790ecb57)
 
 
-
 ### 🔍 搜索功能
 **功能描述**
       在主界面中，点击搜索按钮，输入关键字即可检索笔记标题。支持模糊查询功能，无需输入完整标题即可找到相关笔记，适合大量笔记管理。
@@ -240,18 +239,20 @@ public class NoteSearch extends Activity implements SearchView.OnQueryTextListen
 **代码实现**
 
 1.导出功能通过 menu_export 选项在菜单中触发
-``` java
+java
 case R.id.menu_export:
     export();
     break;
 2.在NoteEditor中添加函数outputNote()：
 
 //跳转导出笔记的activity，将uri信息传到新的activity
+
     private final void outputNote() {
         Intent intent = new Intent(null,mUri);
         intent.setClass(NoteEditor.this,OutputText.class);
         NoteEditor.this.startActivity(intent);
-    }
+ }
+
 3.要对选择导出文件界面进行布局，新建布局output_text.xml，垂直线性布局放置EditText和Button:
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -693,10 +694,9 @@ protected void onListItemClick(ListView l, View v, int position, long id) {
 
 效果展示：
 
+![image](https://github.com/user-attachments/assets/b9bba0f5-cfd3-465b-96b1-eff7688bc7c3)
 
+![image](https://github.com/user-attachments/assets/b0bb6fdd-fb50-413a-8d78-83318152a476)
 
-![image](https://github.com/user-attachments/assets/4492ec83-feed-4719-8161-bde3f4978099)
-
-![image](https://github.com/user-attachments/assets/f2bcb809-d4da-47b5-b3db-51f9d5d9b783)
 
 ### 作者：张鸿伟
