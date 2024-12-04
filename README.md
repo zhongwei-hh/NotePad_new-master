@@ -283,15 +283,22 @@ case R.id.menu_export:
 4.创建OutputText的Acitvity:
 
 public class OutputText extends Activity {
+
    //要使用的数据库中笔记的信息
+   
     private static final String[] PROJECTION = new String[] {
+    
             NotePad.Notes._ID, // 0
             NotePad.Notes.COLUMN_NAME_TITLE, // 1
             NotePad.Notes.COLUMN_NAME_NOTE, // 2
             NotePad.Notes.COLUMN_NAME_CREATE_DATE, // 3
             NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, // 4
+            
     };
+
+    
     //读取出的值放入这些变量
+    
     private String TITLE;
     private String NOTE;
     private String CREATE_DATE;
@@ -304,7 +311,9 @@ public class OutputText extends Activity {
     private Uri mUri;
     //关于返回与保存按钮的一个特殊标记，返回的话不执行导出，点击按钮才导出
     private boolean flag = false;
+    
     private static final int COLUMN_INDEX_TITLE = 1;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.output_text);
@@ -318,7 +327,9 @@ public class OutputText extends Activity {
         );
         mName = (EditText) findViewById(R.id.output_name);
     }
+    
     @Override
+    
     protected void onResume(){
         super.onResume();
         if (mCursor != null) {
@@ -329,6 +340,7 @@ public class OutputText extends Activity {
             mName.setText(mCursor.getString(COLUMN_INDEX_TITLE));
         }
     }
+    
     @Override
     protected void onPause() {
         super.onPause();
@@ -345,6 +357,7 @@ public class OutputText extends Activity {
             flag = false;
         }
     }
+    
     public void OutputOk(View v){
         flag = true;
         finish();
