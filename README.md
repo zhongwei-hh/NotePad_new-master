@@ -544,15 +544,18 @@ case R.id.menu_favorites:
     startActivity(intent);
     return true;
 
-// 6. 在AndroidManifest.xml中注册新Activity
-// 注册FavoritesList这个Activity，设置了它的名称、标签（显示在界面顶部的标题）以及是否可导出（这里设置为可导出，以便其他应用可以访问）
+ 6. 在AndroidManifest.xml中注册新Activity
+    
+ 注册FavoritesList这个Activity，设置了它的名称、标签（显示在界面顶部的标题）以及是否可导出（这里设置为可导出，以便其他应用可以访问）
 <activity
     android:name=".FavoritesList"
     android:label="收藏夹"
     android:exported="true" />
 
-// 7. 修改NotesList.java中的上下文菜单，添加收藏功能
-// 当点击了上下文菜单中的收藏菜单项（ID为R.id.context_favorite）时的处理逻辑
+ 7. 修改NotesList.java中的上下文菜单，添加收藏功能
+
+ 当点击了上下文菜单中的收藏菜单项（ID为R.id.context_favorite）时的处理逻辑
+ 
 case R.id.context_favorite:
     // 创建一个ContentValues对象，用于存储要更新到数据库的值
     ContentValues values = new ContentValues();
@@ -564,9 +567,11 @@ case R.id.context_favorite:
     Toast.makeText(this, "已添加到收藏夹", Toast.LENGTH_SHORT).show();
     return true;
 
-// 8. 修改NotesList.java中的PROJECTION
-// 重新定义查询投影，添加了收藏状态列到要查询的列列表中
-// 这样在后续的查询操作中就可以获取到笔记的收藏状态信息，以便进行相关的业务逻辑处理，比如判断是否已收藏等
+ 8. 修改NotesList.java中的PROJECTION
+
+  重新定义查询投影，添加了收藏状态列到要查询的列列表中
+  这样在后续的查询操作中就可以获取到笔记的收藏状态信息，以便进行相关的业务逻辑处理，比如判断是否已收藏等
+  
 private static final String[] PROJECTION = new String[] {
     NotePad.Notes._ID,
     NotePad.Notes.COLUMN_NAME_TITLE,
@@ -575,9 +580,11 @@ private static final String[] PROJECTION = new String[] {
     NotePad.Notes.COLUMN_NAME_FAVORITE
 };
 
-// 9. 在NotePadProvider.java中添加收藏列的映射
-// 静态代码块，用于初始化一个哈希表，将数据库表中的列名与对应的属性名进行映射
-// 这里添加了收藏状态列的映射，确保在进行数据查询、更新等操作时能够正确地对应到数据库中的列
+  9. 在NotePadProvider.java中添加收藏列的映射
+
+  静态代码块，用于初始化一个哈希表，将数据库表中的列名与对应的属性名进行映射
+  这里添加了收藏状态列的映射，确保在进行数据查询、更新等操作时能够正确地对应到数据库中的列
+
 static {
     sNotesProjectionMap = new HashMap<String, String>();
     sNotesProjectionMap.put(NotePad.Notes._ID, NotePad.Notes._ID);
@@ -589,17 +596,20 @@ static {
     sNotesProjectionMap.put(NotePad.Notes.COLUMN_NAME_FAVORITE, NotePad.Notes.COLUMN_NAME_FAVORITE);
 }
 
-// 10. 在NotesList.java中添加批量收藏相关的变量和方法
-// 定义一个布尔变量，用于标识是否处于批量操作模式，初始值为false，表示未处于批量模式
+ 10. 在NotesList.java中添加批量收藏相关的变量和方法
+
+
+//定义一个布尔变量，用于标识是否处于批量操作模式，初始值为false，表示未处于批量模式
 private boolean isInBatchMode = false;
-// 创建一个集合，用于存储在批量操作模式下被选中的笔记的ID
+//创建一个集合，用于存储在批量操作模式下被选中的笔记的ID
 private Set<Long> selectedNotes = new HashSet<>();
-// 保存当前菜单对象的引用，以便在后续操作中对菜单进行修改等处理
+//保存当前菜单对象的引用，以便在后续操作中对菜单进行修改等处理
 private Menu mMenu;
 
-// 定义一个方法，用于切换批量操作模式
-// 当调用此方法时，会改变isInBatchMode的值，并根据新的值来设置相关菜单项的可见性、图标和标题等属性
-// 同时，如果退出批量模式，会清空已选中的笔记集合，并刷新菜单和列表视图
+//定义一个方法，用于切换批量操作模式
+//当调用此方法时，会改变isInBatchMode的值，并根据新的值来设置相关菜单项的可见性、图标和标题等属性
+//同时，如果退出批量模式，会清空已选中的笔记集合，并刷新菜单和列表视图
+
 private void toggleBatchMode() {
         isInBatchMode =!isInBatchMode;
         MenuItem batchDeleteItem = mMenu.findItem(R.id.menu_batch_delete);
@@ -616,8 +626,9 @@ private void toggleBatchMode() {
         getListView().invalidateViews();
 }
 
-// 11. 修改onOptionsItemSelected中的收藏处理
-// 当点击了收藏夹菜单项（ID为R.id.menu_favorites）时的处理逻辑，这里区分了是否处于批量操作模式
+  11. 修改onOptionsItemSelected中的收藏处理
+//当点击了收藏夹菜单项（ID为R.id.menu_favorites）时的处理逻辑，这里区分了是否处于批量操作模式
+
 case R.id.menu_favorites:
                 if (isInBatchMode) {
                     // 如果处于批量模式，首先判断是否有选中的笔记
@@ -669,24 +680,27 @@ case R.id.menu_favorites:
                 }
                 return true;
 
-// 12. 修改SimpleCursorAdapter的bindView方法
-// 重写SimpleCursorAdapter的bindView方法，用于在将游标数据绑定到列表视图的每个项时进行额外的处理
+ 12. 修改SimpleCursorAdapter的bindView方法
+ 重写SimpleCursorAdapter的bindView方法，用于在将游标数据绑定到列表视图的每个项时进行额外的处理
+
 @Override
 public void bindView(View view, Context context, Cursor cursor) {
     super.bindView(view, context, cursor);
 
-    // 在列表视图的每个项中找到对应的复选框视图
+    //在列表视图的每个项中找到对应的复选框视图
+
     CheckBox selectCheckBox = view.findViewById(R.id.select_checkbox);
-    // 获取当前笔记的ID
+    
+    //获取当前笔记的ID
     long noteId = cursor.getLong(cursor.getColumnIndex(NotePad.Notes._ID));
 
-    // 根据是否处于批量操作模式，设置复选框的可见性
+    //根据是否处于批量操作模式，设置复选框的可见性
     selectCheckBox.setVisibility(isInBatchMode? View.VISIBLE : View.GONE);
-    // 判断当前笔记的ID是否在已选中的笔记集合中，如果是，则将复选框设置为选中状态
+    //判断当前笔记的ID是否在已选中的笔记集合中，如果是，则将复选框设置为选中状态
     selectCheckBox.setChecked(selectedNotes.contains(noteId));
 
-    // 设置复选框的选中状态改变监听器
-    // 当复选框的选中状态发生改变时，根据新的选中状态，在已选中的笔记集合中添加或移除对应的笔记ID
+    //设置复选框的选中状态改变监听器
+    //当复选框的选中状态发生改变时，根据新的选中状态，在已选中的笔记集合中添加或移除对应的笔记ID
     selectCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
         if (isChecked) {
             selectedNotes.add(noteId);
@@ -696,12 +710,13 @@ public void bindView(View view, Context context, Cursor cursor) {
     });
 }
 
-// 13. 在实现收藏夹的基础上，实现在收藏夹里，可以继续点击进行修改，需要在FavoritesList.java中，添加点击事件处理。在onCreate方法中添加以下代码：
+13. 在实现收藏夹的基础上，实现在收藏夹里，可以继续点击进行修改，需要在FavoritesList.java中，添加点击事件处理。在onCreate方法中添加以下代码：
+
 @Override
 protected void onListItemClick(ListView l, View v, int position, long id) {
-    // 构建笔记的URI，通过ContentUris工具类，将原始数据的URI和当前点击的笔记ID组合起来
+    //构建笔记的URI，通过ContentUris工具类，将原始数据的URI和当前点击的笔记ID组合起来
     Uri noteUri = ContentUris.withAppendedId(getIntent().getData(), id);
-    // 启动编辑活动，创建一个意图，指定动作为ACTION_EDIT，并传入构建好的笔记URI
+    //启动编辑活动，创建一个意图，指定动作为ACTION_EDIT，并传入构建好的笔记URI
     startActivity(new Intent(Intent.ACTION_EDIT, noteUri));
 }
 
